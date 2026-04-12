@@ -1,11 +1,13 @@
 "use client";
 
+import { useAuth } from "@/lib/auth-context";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useState } from "react";
 
 export function Navbar() {
   const t = useTranslations("common");
+  const { user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -63,18 +65,39 @@ export function Navbar() {
                 className="w-64 px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <Link
-              href="/login"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              {t("login")}
-            </Link>
-            <Link
-              href="/register"
-              className="text-sm bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700"
-            >
-              {t("register")}
-            </Link>
+
+            {user ? (
+              <>
+                <Link
+                  href="/upload"
+                  className="text-sm bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700"
+                >
+                  {t("upload")}
+                </Link>
+                <span className="text-sm text-gray-600">{user.username}</span>
+                <button
+                  onClick={logout}
+                  className="text-sm text-gray-500 hover:text-gray-700"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  {t("login")}
+                </Link>
+                <Link
+                  href="/login"
+                  className="text-sm bg-blue-600 text-white px-4 py-1.5 rounded-lg hover:bg-blue-700"
+                >
+                  {t("register")}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

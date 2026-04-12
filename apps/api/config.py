@@ -17,7 +17,11 @@ class Settings(BaseSettings):
     gitea_admin_password: str = "changeme"
     gitea_admin_token: str = ""
 
-    # MinIO
+    # Storage
+    storage_backend: str = "local"  # "local" or "minio"
+    local_storage_path: str = "./storage"
+
+    # MinIO (used when storage_backend = "minio")
     minio_endpoint: str = "localhost:9000"
     minio_access_key: str = "minioadmin"
     minio_secret_key: str = "changeme"

@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth-context";
 import { Navbar } from "@/components/navbar";
 
 const geistSans = Geist({
@@ -35,8 +36,10 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-gray-50">
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex-1">{children}</main>
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

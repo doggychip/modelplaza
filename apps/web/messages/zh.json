@@ -1,0 +1,50 @@
+{
+  "common": {
+    "appName": "模型广场",
+    "tagline": "开源AI模型中心 · 链上溯源",
+    "login": "登录",
+    "register": "注册",
+    "search": "搜索模型...",
+    "upload": "上传模型",
+    "download": "下载",
+    "likes": "收藏",
+    "downloads": "下载量",
+    "models": "模型",
+    "datasets": "数据集",
+    "spaces": "应用空间",
+    "docs": "文档"
+  },
+  "home": {
+    "hero": "发现、分享、验证AI模型",
+    "subtitle": "首个支持链上溯源的中文开源模型中心",
+    "explore": "探索模型",
+    "trending": "热门模型",
+    "recent": "最新上传",
+    "frameworks": "框架",
+    "tasks": "任务类型"
+  },
+  "model": {
+    "card": "模型卡片",
+    "files": "文件",
+    "versions": "版本",
+    "provenance": "链上溯源",
+    "license": "许可证",
+    "framework": "框架",
+    "task": "任务",
+    "tags": "标签",
+    "uploadedBy": "上传者",
+    "createdAt": "创建时间",
+    "verifiedOnChain": "已链上验证",
+    "notRegistered": "未注册链上",
+    "viewOnExplorer": "在区块浏览器查看"
+  },
+  "auth": {
+    "loginTitle": "登录模型广场",
+    "registerTitle": "注册模型广场",
+    "username": "用户名",
+    "email": "邮箱",
+    "password": "密码",
+    "noAccount": "没有账号？",
+    "hasAccount": "已有账号？"
+  }
+}

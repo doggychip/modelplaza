@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-modelplaza}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-modelplaza}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-modelplaza}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gitea:
+    image: gitea/gitea:1.22-rootless
+    environment:
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=postgres:5432
+      - GITEA__database__NAME=${POSTGRES_DB:-modelplaza}_gitea
+      - GITEA__database__USER=${POSTGRES_USER:-modelplaza}
+      - GITEA__database__PASSWD=${POSTGRES_PASSWORD:-changeme}
+      - GITEA__server__ROOT_URL=${GITEA_ROOT_URL:-http://localhost:3000}
+      - GITEA__server__HTTP_PORT=3000
+      - GITEA__lfs__STORAGE_TYPE=minio
+      - GITEA__lfs__MINIO_ENDPOINT=minio:9000
+      - GITEA__lfs__MINIO_ACCESS_KEY_ID=${MINIO_ROOT_USER:-minioadmin}
+      - GITEA__lfs__MINIO_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD:-changeme}
+      - GITEA__lfs__MINIO_BUCKET=gitea-lfs
+      - GITEA__lfs__MINIO_USE_SSL=false
+    ports:
+      - "3000:3000"
+      - "2222:2222"
+    volumes:
+      - gitea_data:/var/lib/gitea
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-changeme}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 $${MINIO_ROOT_USER:-minioadmin} $${MINIO_ROOT_PASSWORD:-changeme};
+      mc mb --ignore-existing local/model-weights;
+      mc mb --ignore-existing local/gitea-lfs;
+      mc mb --ignore-existing local/datasets;
+      echo 'Buckets created';
+      "
+
+volumes:
+  postgres_data:
+  gitea_data:
+  minio_data:

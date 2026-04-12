@@ -1,0 +1,50 @@
+{
+  "common": {
+    "appName": "Model Plaza",
+    "tagline": "Open-Source AI Model Hub · On-Chain Provenance",
+    "login": "Login",
+    "register": "Register",
+    "search": "Search models...",
+    "upload": "Upload Model",
+    "download": "Download",
+    "likes": "Likes",
+    "downloads": "Downloads",
+    "models": "Models",
+    "datasets": "Datasets",
+    "spaces": "Spaces",
+    "docs": "Docs"
+  },
+  "home": {
+    "hero": "Discover, Share & Verify AI Models",
+    "subtitle": "The first Chinese model hub with on-chain provenance",
+    "explore": "Explore Models",
+    "trending": "Trending Models",
+    "recent": "Recently Uploaded",
+    "frameworks": "Frameworks",
+    "tasks": "Tasks"
+  },
+  "model": {
+    "card": "Model Card",
+    "files": "Files",
+    "versions": "Versions",
+    "provenance": "On-Chain Provenance",
+    "license": "License",
+    "framework": "Framework",
+    "task": "Task",
+    "tags": "Tags",
+    "uploadedBy": "Uploaded by",
+    "createdAt": "Created",
+    "verifiedOnChain": "Verified on-chain",
+    "notRegistered": "Not registered on-chain",
+    "viewOnExplorer": "View on block explorer"
+  },
+  "auth": {
+    "loginTitle": "Login to Model Plaza",
+    "registerTitle": "Register for Model Plaza",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  }
+}

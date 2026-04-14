@@ -2,9 +2,16 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    # Database
+    # Database — accepts Railway's DATABASE_URL (postgresql://) and converts to asyncpg
     database_url: str = "postgresql+asyncpg://modelplaza:changeme@localhost:5432/modelplaza"
     database_url_sync: str = "postgresql://modelplaza:changeme@localhost:5432/modelplaza"
+
+    @property
+    def async_database_url(self) -> str:
+        url = self.database_url
+        if url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
 
     # Auth
     secret_key: str = "changeme-to-a-real-secret"
@@ -32,6 +39,9 @@ class Settings(BaseSettings):
     chain_rpc_url: str = "https://sepolia.base.org"
     chain_private_key: str = ""
     model_registry_address: str = ""
+
+    # CORS — allowed origins for the frontend
+    cors_origins: str = "http://localhost:3001,http://localhost:3000"
 
     model_config = {"env_file": "../../.env", "extra": "ignore"}
 

@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+// Use relative URL so requests go through Next.js rewrites (which proxy to the backend)
+const API_BASE = "/api/v1";
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
   const token =

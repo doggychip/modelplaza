@@ -6,15 +6,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from config import settings
-from database import engine, Base
+from database import engine, Base, SERVERLESS
 from routers import auth, models
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create tables on startup (use Alembic in production)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    if SERVERLESS:
+        Base.metadata.create_all(bind=engine)
+    else:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
     yield
 
 
@@ -37,7 +39,7 @@ app.include_router(auth.router)
 app.include_router(models.router)
 
 # Serve local storage files when using local backend
-if settings.storage_backend == "local":
+if settings.storage_backend == "local" and not SERVERLESS:
     storage_path = Path(settings.local_storage_path)
     storage_path.mkdir(parents=True, exist_ok=True)
     app.mount("/api/v1/files", StaticFiles(directory=str(storage_path)), name="files")
